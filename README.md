@@ -1,1 +1,1 @@
-This repo contains different complete and on going projects related to data sciences that I have built.
+This repo contains different completed and on going projects related to data sciences that I have built.
