@@ -82,12 +82,13 @@ filtered_2021['month']= pd.to_datetime(filtered_2021['month'], format ='%m').dt.
 filtered_2022['month']= pd.to_datetime(filtered_2022['month'], format ='%m').dt.month_name()
 
 
-plt.plot(filtered_2021['month'],filtered_2021['Steps'], label = "Canada: 2021 - 2022" )
-plt.plot(filtered_2022['month'],filtered_2022['Steps'], label = "Thailand: 2022 - 2023" )
+plt.plot(filtered_2021['month'],filtered_2021['Steps'], label = "Canada: 2021 - 2022", c = 'steelblue', lw = 3 )
+plt.plot(filtered_2022['month'],filtered_2022['Steps'], label = "Thailand: 2022 - 2023", c= 'seagreen', lw= 3 )
 plt.ylabel("Average Daily Steps")
 plt.title("Step Comparison: Canada Vs. Thailand")
 plt.xticks(rotation = 45)
 plt.legend()
+plt.tight_layout()
 plt.show()
 
 
@@ -133,4 +134,5 @@ plt.show()
 
 print(dist_2021['Steps'].describe())
 print(dist_2022['Steps'].describe())
+
 
