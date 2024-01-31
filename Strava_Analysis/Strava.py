@@ -8,12 +8,6 @@ import datetime as dt
 
 strava_in = pd.read_csv('activities.csv')
 
-## Goal: Show most recorded activities, average time per activity and distance per activity
-## activity time month over month and 
-## 
-## visualization: activities: bar chart with numbers next to bar, time: ? distances: plot graph with lines
-
-
 
 ## Cleaning and reformatting the names of the columns
 def clean_col(c):
@@ -37,14 +31,12 @@ strava_in['distance.1'] = strava_in['distance.1'].apply(clean_meters)
 
 
 
-## There are two columns named "distance" so pnadas renamed the second one distance.1.
-## We'll change the name to distance_meters
+## There are two columns named "distance" so pandas renamed the second one distance.1.
+## We'll change the name to distance_kms
 
 strava_in.rename({'distance.1':'distance_km'}, axis= 1, inplace=True)
 
 ## Need to change the distance from a string to a float, first we need to replace the , to . so that it can convert
-
-strava_in['distance'] = strava_in['distance'].str.replace(',','.')
 
 strava_in['distance_km'] = strava_in['distance_km'].astype(float)
 
@@ -58,10 +50,6 @@ strava_in['distance_km'] = strava_in['distance_km'].astype(float)
 strava_in['activity_type']= strava_in['activity_type'].replace('Backcountry Ski', 'Nordic Ski') 
 strava_in['activity_type']= strava_in['activity_type'].replace('Windsurf', 'Sailing')
 strava_in['activity_type']= strava_in['activity_type'].replace('Stand Up Paddling', 'SUP')
-
-# The swim distance in our dataframe is in meters but 
-strava_in['activity_type']= strava_in['activity_type'].replace('Windsurf', 'Sailing')
-
 
 
 ## these df are for the mean time
@@ -138,52 +126,46 @@ filtered_2021['Time'] = round(filtered_2021['Time'] / 3600, 1)
 filtered_2022['Time'] = round(filtered_2022['Time'] / 3600, 1)
 
 
-plt.plot(filtered_2021['month'],filtered_2021['Time'], label = "Canada: 2021 - 2022" )
-plt.plot(filtered_2022['month'],filtered_2022['Time'], label = "Thailand: 2022 - 2023" )
+plt.plot(filtered_2021['month'],filtered_2021['Time'], label = "Canada: 2021 - 2022", color = 'steelblue' , lw= 3)
+plt.plot(filtered_2022['month'],filtered_2022['Time'], label = "Thailand: 2022 - 2023", color = 'seagreen', lw= 3 )
 plt.ylabel("Hours of Activity")
 plt.title("Hours of Activity in the Winter: Canada Vs. Thailand")
 plt.xticks(rotation = 45)
 plt.legend()
+plt.tight_layout()
 plt.show()
-
-
-
-
-
 
 
 
 
 plt.barh(count_n_time['activity_type'], count_n_time['count'], edgecolor="white")
 plt.title('Activity Count Per Type')
-plt.ylabel('Activity')
 plt.xlabel('Frequency')
 for index, value in enumerate(count_n_time['count']):
     plt.text(value, index,
              str(value))
 
 plt.xticks()
+plt.tight_layout()
 
 plt.show()
 
+#width=1, linewidth=0.7
+plt.figure().set_figwidth(11)
+plt.barh(distances['activity_type'], distances['distance_km'],edgecolor="white")
+plt.title('KM Per Type of Activity')
+plt.xlabel('Total Kilometers')
+plt.tick_params(axis = 'x',rotation = 60)
+for index, value in enumerate(distances['distance_km']):
+    plt.text(value, index,
+             str(round(value,1)))
 
-fig, axs = plt.subplots(2,1, figsize =(16,8), constrained_layout=True)
-
-axs[0].bar(time_fin['activity_type'], time_fin['elapsed_time'], width=1, edgecolor="white", linewidth=0.7)
-axs[0].set_title('Average Activity Time Per Type')
-axs[0].set_ylabel('Average Time')
-axs[0].tick_params(axis = 'x', rotation = 60)
-
-
-axs[1].bar(distances['activity_type'], distances['distance_km'], width=1, edgecolor="white", linewidth=0.7)
-axs[1].set_title('KM Per Type of Activity')
-axs[1].set_ylabel('Total Kilometers')
-axs[1].tick_params(axis = 'x',rotation = 60)
 
 plt.tight_layout()
 
 
 plt.show()
+
 
 
 
